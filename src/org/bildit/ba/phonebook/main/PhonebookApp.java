@@ -25,7 +25,7 @@ public class PhonebookApp {
 		System.out.println(" To register press [1], to login press [2]");
 		int press = Utilities.checkInputInt(1, 2, input);
 
-		while (true) { //infinite loop becouse this is console program
+		while (true) { // infinite loop becouse this is console program
 			input.nextLine();
 			if (press == 1) {
 				registerUser(userImpl, 0); // 0 is false for admin
@@ -54,7 +54,7 @@ public class PhonebookApp {
 								+ " you are loged in.");
 						System.out.println("This is the MAIN MENUE***");
 
-						mainMenueRegularUser(user);
+						mainMenueUser(user);
 					}
 				} else {
 					System.out
@@ -88,7 +88,7 @@ public class PhonebookApp {
 								+ " you are loged in.");
 						System.out.println("This is the MAIN MENUE***");
 
-						mainMenueRegularUser(user);
+						mainMenueUser(user);
 					}
 				} else {
 					System.out
@@ -148,7 +148,7 @@ public class PhonebookApp {
 			repeat = true;
 			while (repeat == true) {
 
-				Users u = findUserADMIN();
+				Users u = findUser();
 				if (u != null) {
 					// print user
 					userImpl.printUser(u);
@@ -221,7 +221,7 @@ public class PhonebookApp {
 			break;
 
 		case 7:// Do something with your phonebook
-			mainMenueRegularUser(user);
+			mainMenueUser(user);
 			break;
 
 		case 8: // Log out
@@ -231,7 +231,7 @@ public class PhonebookApp {
 		}
 	}
 
-	public static void mainMenueRegularUser(Users user) {
+	public static void mainMenueUser(Users user) {
 		System.out.println("Enter number from 1 to 6 to select option:");
 		System.out.println("1. Add new contact.  ");
 		System.out.println("2. Edit contact. ");
@@ -247,7 +247,7 @@ public class PhonebookApp {
 		case 1:// Add new contact
 			int userID = user.getUserID();
 			addNewContact(contactImpl, userID);
-			optionMenueLogoutExitAppRegularUser(user);
+			optionMenueLogoutExitAppUser(user);
 			break;
 
 		case 2: // Edit contact
@@ -263,7 +263,7 @@ public class PhonebookApp {
 				if (user != null) {
 					editContact(editCon);
 					repeat = false;
-					optionMenueLogoutExitAppRegularUser(user);
+					optionMenueLogoutExitAppUser(user);
 				} else {
 					System.out
 							.println("Input is wrong or users is not in databese. Try again.");
@@ -272,7 +272,7 @@ public class PhonebookApp {
 			}
 
 			// contact.editEntryInContacts(userID, column, fieldToEdit);
-			optionMenueLogoutExitAppRegularUser(user);
+			optionMenueLogoutExitAppUser(user);
 			break;
 
 		case 3:// delete contact
@@ -319,7 +319,8 @@ public class PhonebookApp {
 						}
 					}
 				} else {
-					System.out.println("Delete another one: [1] YES or [2] NO?");
+					System.out
+							.println("Delete another one: [1] YES or [2] NO?");
 					int delete = Utilities.checkInputInt(1, 2, input);
 
 					if (delete == 1) {
@@ -329,7 +330,7 @@ public class PhonebookApp {
 					}
 				}
 			}
-			optionMenueLogoutExitAppRegularUser(user);
+			optionMenueLogoutExitAppUser(user);
 			break;
 
 		case 4: // See list of all contacts
@@ -341,7 +342,7 @@ public class PhonebookApp {
 				contactImpl.printContact(c);
 			}
 
-			optionMenueLogoutExitAppRegularUser(user);
+			optionMenueLogoutExitAppUser(user);
 			break;
 
 		case 5: // Search Contacts
@@ -363,14 +364,14 @@ public class PhonebookApp {
 						repeat = true;
 					} else {
 						repeat = false;
-						optionMenueLogoutExitAppRegularUser(user);
+						optionMenueLogoutExitAppUser(user);
 					}
 				}
 			}
 			System.out.println();
-			optionMenueLogoutExitAppRegularUser(user);
+			optionMenueLogoutExitAppUser(user);
 			break;
-		case 6: 
+		case 6:
 			userImpl.logOut(user);
 			System.out.println("User " + user.getFirstName()
 					+ " is now loged out.");
@@ -396,54 +397,41 @@ public class PhonebookApp {
 		userImpl.enterNewUserToDB(firstName, lastName, gender, mail, userName,
 				password, isAdmin);
 
-		ContactsDaoImplementation contacts = new ContactsDaoImplementation();
-
 		Users user = userImpl.findUserInDatabase(userName, "userName");
 
-		contacts.makeCapacityForNewUserInContacts(user.getUserID());
+		contactImpl.makeCapacityForNewUserInContacts(user.getUserID());
 	}
 
 	public static void editUser(Users user) {
 
 		boolean editNext = true;
-
 		while (editNext == true) {
-
-			// System.out
-			// .println("Enter users field to update(firstName, lastName, userName, gender, mail, isAdmin )");
 
 			System.out.print("Set a new name for user (current: "
 					+ user.getFirstName() + " ): ");
 			String name = input.next();
-
 			System.out.print("Set a new last name for user (current: "
 					+ user.getLastName() + " ): ");
 			String lastName = input.next();
-
 			System.out.print("Set a new user name for user (current: "
 					+ user.getUserName() + " ): ");
 			String userName = input.next();
-
 			System.out.print("Set a new gender for user (current: "
 					+ user.getGender() + " ): ");
 			String gender = input.next();
-
 			System.out.print("Set a new email for user (current: "
 					+ user.getEmail() + " ): ");
 			String email = input.next();
-
 			System.out
 					.print("Set a new value for user if its admin [1] or regular user [0](current: "
 							+ user.getIsAdmin() + " ): ");
 			int isAdmin = input.nextInt();
 
-			int userID = user.getUserID();
-			String password = user.getPassword();
-			Users userUpdate = new Users(userID, name, lastName, gender, email,
-					userName, password, isAdmin);
+			Users userUpdate = new Users(user.getUserID(), name, lastName,
+					gender, email, userName, user.getPassword(), isAdmin);
 
-			if (userImpl.updateUserInDatabase(userUpdate))
-				System.out.println("Data for this user is updated.");
+			userImpl.updateUserInDatabase(userUpdate);
+			System.out.println("Data for this user is updated.");
 
 			System.out
 					.println("Would you like to update more users [1] yes, [2] no: ");
@@ -489,9 +477,9 @@ public class PhonebookApp {
 					lastName, gender, email, phoneNumber, address,
 					contact.getUserID());
 
-			if (contactImpl.updateContact(updateCon)) {
-				System.out.println("Data for this contact are updated.");
-			}
+			contactImpl.updateContact(updateCon);
+			System.out.println("Data for this contact are updated.");
+
 			System.out
 					.println("Would you like to update more contacts [1] yes, [2] no: ");
 			int choise = Utilities.checkInputInt(1, 2, input);
@@ -510,7 +498,6 @@ public class PhonebookApp {
 						+ "(Enter numbers from 1 to 6) ");
 
 		input.nextLine();
-
 		int usersInput = Utilities.checkInputInt(1, 6, input);
 
 		String column = "";
@@ -539,22 +526,18 @@ public class PhonebookApp {
 		System.out.println("Enter field value");
 		String fieldValue = input.nextLine();
 
-		Contacts findContact = contactImpl.searchContacts(user.getUserID(),
+		return contactImpl.searchContacts(user.getUserID(),
 				column, fieldValue);
-
-		return findContact;
-
 	}
 
 	/***/
-	public static Users findUserADMIN() {
+	public static Users findUser() {
 		System.out
 				.println("Chose field for a search: "
 						+ "[1]name, [2]last name, [3]user name, [4]gender, [5]e-mail, [6]is admin "
 						+ "(Enter numbers from 1 to 6)");
 
 		input.nextLine();
-
 		int usersInput = Utilities.checkInputInt(1, 6, input);
 
 		String column = "";
@@ -584,15 +567,9 @@ public class PhonebookApp {
 		System.out.println("Enter field value");
 		String fieldValue = input.nextLine();
 
-		Users findUser = userImpl.findUserInDatabase(fieldValue, column);
-
-		return findUser;
+		return userImpl.findUserInDatabase(fieldValue, column);
 	}
 
-	/**
-	 * METHODS FOR REGULAR USER MENUE
-	 * 
-	 */
 
 	public static void addNewContact(ContactsDaoImplementation contacts,
 			int userID) {
@@ -611,15 +588,15 @@ public class PhonebookApp {
 		String gender = input.nextLine();
 
 		ArrayList<Contacts> usersContacts = contacts.usersContacts(user);
-		
-		//all contacts are in one table in db, every has its own id
+
+		// all contacts are in one table in db, every has its own id
 		int contactID = (userID - 1) * 100 + usersContacts.size() + 1;
 
-		contacts.addContactToPhonebook(contactID, firstName,
-				lastName, email, phoneNumber, address, gender, userID);
+		contacts.addContactToPhonebook(contactID, firstName, lastName, email,
+				phoneNumber, address, gender, userID);
 
-		System.out.println("The contact " + firstName+ " "
-				+ lastName + "is added to your phonebook.");
+		System.out.println("The contact " + firstName + " " + lastName
+				+ "is added to your phonebook.");
 
 	}
 
@@ -639,13 +616,13 @@ public class PhonebookApp {
 		}
 	}
 
-	public static void optionMenueLogoutExitAppRegularUser(Users user) {
+	public static void optionMenueLogoutExitAppUser(Users user) {
 		System.out
 				.println("Press [1] to back to the main menue, [2] to log out, [3] to exit app. ");
 		int option = Utilities.checkInputInt(1, 3, input);
 		if (option == 1) {
 
-			mainMenueRegularUser(user);
+			mainMenueUser(user);
 
 		} else if (option == 2) {
 			userImpl.logOut(user);

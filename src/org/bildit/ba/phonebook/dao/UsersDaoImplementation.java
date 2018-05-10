@@ -1,13 +1,12 @@
 package org.bildit.ba.phonebook.dao;
 
-import java.sql.Connection;
+import java.sql.Connection; 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 
-import org.bildit.ba.phonebook.dto.Contacts;
 import org.bildit.ba.phonebook.dto.Users;
 import org.bildit.ba.phonebook.main.ConnectionManager;
 
@@ -38,7 +37,7 @@ public class UsersDaoImplementation implements UsersDaoInterface {
 			ps.setString(4, email);
 			ps.setString(5, userName);
 			ps.setString(6, password);
-			ps.setInt(7, isAdmin); // tini int in db
+			ps.setInt(7, isAdmin); // tiny int in db
 
 			ps.executeUpdate();
 
@@ -129,7 +128,7 @@ public class UsersDaoImplementation implements UsersDaoInterface {
 			ps.setString(1, user.getUserName());
 			rs = ps.executeQuery();
 
-			if (rs.next()) { // if stable contains some data
+			if (rs.next()) { // if table contains some data
 
 				if (rs.getInt("isAdmin") == 1) {
 					admin = true; // if it's admin, return true
@@ -139,7 +138,6 @@ public class UsersDaoImplementation implements UsersDaoInterface {
 			rs.close();
 		} catch (SQLException e) {
 			System.err.println(e);
-			// return false;
 		}
 		return admin;
 	}
