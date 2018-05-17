@@ -1,7 +1,5 @@
 package org.bildit.ba.phonebook.dao;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
